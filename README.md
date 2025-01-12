@@ -1,4 +1,4 @@
-# Setting up a remove development environment
+# Setting up a remote development environment
 
 1. Install Ubuntu server using minimal install with Docker option checked
 1. `sudo apt update && sudo apt upgrade -y`
