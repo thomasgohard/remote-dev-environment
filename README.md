@@ -1,13 +1,34 @@
 # Setting up a remote development environment
 
-1. Install Ubuntu server using minimal install with Docker option checked
-1. `sudo apt update && sudo apt upgrade -y`
-1. `sudo apt install -y nginx`
-1. `sudo groupadd docker`
-1. `sudo usermod -aG docker $USER`
-1. `curl -fsSL https://code-server.dev/install.sh | sh`
-1. `sudo systemctl enable --now code-server@$USER`
-1. ```bash
+These instructions will set up a server as a remote development environment running Visual Studio Code that can be accessed via any web browser.
+
+First, install Ubuntu server using the minimal install. If you intend to use devcontainers, also check the Docker option during the installation process.
+
+Once the installation is complete, make sure your install is up-to-date:
+
+`sudo apt update && sudo apt upgrade -y`
+
+Install nginx:
+
+`sudo apt install -y nginx`
+
+Configure your user to use Docker:
+
+`sudo groupadd docker`
+
+`sudo usermod -aG docker $USER`
+
+Install Visual Studio Code server:
+
+`curl -fsSL https://code-server.dev/install.sh | sh`
+
+Configure Visual Studio Code server to run as a service and start it:
+
+`sudo systemctl enable --now code-server@$USER`
+
+Configure nginx as a reverse proxy for Visual Studio Code server:
+
+```bash
 sudo tee /etc/nginx/sites-available/code-server >/dev/null <<EOF
 server {
     listen 80;
@@ -23,7 +44,13 @@ server {
 }
 EOF
 ```
-1. `sudo ln -s /etc/nginx/sites-available/code-server /etc/nginx/sites-enabled/code-server`
-1. `sudo systemctl restart nginx code-server`
-1. `sudo ufw enable`
-1. `sudo ufw allow http`
+
+`sudo ln -s /etc/nginx/sites-available/code-server /etc/nginx/sites-enabled/code-server`
+
+`sudo systemctl restart nginx code-server`
+
+Configure the firewall:
+
+`sudo ufw enable`
+
+`sudo ufw allow http`
